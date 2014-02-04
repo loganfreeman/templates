@@ -1,0 +1,118 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+     /*border width is set to *bloody* medium(like 2.5px) by default, f*** W3C*/
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+}
+
+body {
+    margin-bottom: 50px;
+}
+
+#content-list-view {
+    position: relative;
+    width:1000px;
+    height:600px;
+    margin: 0px auto;
+}
+
+#leftpane {
+    position: absolute;
+    width:500px;
+    background-color: rgb(234, 226, 133);
+}
+
+#list1 {
+    height:600px;
+    /* scroll bar usually takes up inner content space of the owner, if*/
+    /*not need horizontal scrollbar, hide it*/
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+/* Let's get this party started */
+#list1::-webkit-scrollbar {
+    width: 4px;
+}
+#list1::-webkit-scrollbar-track {
+    border-radius: 4px;
+    background-color: rgba(156, 156, 156, 0.5);
+}
+
+#list1::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    /*-webkit-box-shadow: inset 0 0 3px rgb(95, 95, 95);*/
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+#rightpane {
+    width:500px;
+    height:600px;
+    margin-left:500px;
+    background-color: rgb(255, 244, 196);
+}
+#rightpane-div1 {
+    width:500px;
+    height:100px;
+    margin: 0px, auto;
+    background-color: rgb(197, 255, 86);
+}
+#rightpane-div2 {
+    width:500px;
+    height:200px;
+    margin: 0px, auto;
+    background-color: rgb(154, 151, 255);
+}
+#rightpane-div3 {
+    width:500px;
+    height:300px;
+    margin: 0px, auto;
+    background-color: rgb(255, 185, 175);
+}
+.clickable_row {
+    position: relative;
+    width:500px;
+    height:60px;
+    background-color:#c5f2fb;
+    margin: 0 auto;
+    text-align: center;
+    border-style: solid;
+    border-color: white;
+    border-bottom-width: 2px;
+}
+.clickable_row:hover {
+    background-color: #d1d1d1;
+}
+#rec_title {
+    position: absolute;
+    width:100px;
+    height:30px;
+    /* background-color:rgb(100,100,0); */
+    top: 15px;
+}
+#rec_date {
+    width:400px;
+    height:20px;
+    margin-left:100px;
+    /*background-color:rgb(200,0,0);*/
+}
+#rec_type {
+    width:400px;
+    height:40px;
+    margin-left:100px;
+    /*background-color:rgb(0,200,0);*/
+}
+#notebox {
+    position: fixed;
+    width: 500px;
+    height: 30px;
+    margin-top: 570px;
+    text-align: center;
+    background-color: rgba(60, 200, 102, 0.7);
+    z-index: 100;
+}

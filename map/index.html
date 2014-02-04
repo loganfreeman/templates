@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+
+        <!-- esri-related js and css -->
+        <link href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/dojo/dijit/themes/claro/claro.css" rel="stylesheet" type="text/css" >
+        <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/js/esri/css/esri.css" />
+        <script>dojoConfig = { parseOnLoad:true };</script>
+        <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.3/"></script>
+
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <link rel="stylesheet" href="css/main.css">
+
+        <script type="text/html" id="template-sidebar">
+            <div id="inlet-info"></div>
+            <div id="inlet-search"></div>
+            <div id="survey-list"></div>
+        </script>
+
+        <script type="text/html" id="template-inletItemView">
+            <li><a href="#inlets/<%= OBJECTID %>"><%= INLET_NAME %></a></li>
+        </script>
+
+        <script type="text/html" id="template-inletListView">
+            <p>List of US Inlets</p>
+            <ul id="inlet-list"></ul>
+        </script>
+
+        <script type="text/html" id="template-inletInfoView">
+            <p>Here is some interesting info regarding <%= INLET_NAME %>.</p>
+        </script>
+
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="#"><bold>Regional Process &amp Analysis Tool</bold></a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right">
+                            <li class="active"><a href="#">Inlets</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="rpatapp" class="container-fluid">
+            <div class="row-fluid">
+                <div id="sidebar-container" class="span3 sidebar"></div>
+                <div id="map-container" class="span9 claro"></div>
+            </div>
+        </div>
+        <footer class="navbar-fixed-bottom">
+            <div class="navbar-inner">
+                <div class="container">
+                    <p>&copy; ERDC Coastal Hydraulics Lab</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Dependency libs-->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+        <script type="text/javascript" src="js/lib/json2.js"></script>
+        <script type="text/javascript" src="js/lib/underscore-min.js"></script>
+        <script type="text/javascript" src="js/lib/backbone-min.js"></script>
+        <script type="text/javascript" src="js/lib/backbone-marionette-min.js"></script>
+        <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
+
+        <!-- application -->
+        <script type="text/javascript" src="js/RPAT.js"></script>
+        <script type="text/javascript" src="js/RPAT.Layout.js"></script>
+        <script type="text/javascript" src="js/RPAT.Map.js"></script>
+        <script type="text/javascript" src="js/RPAT.Inlets.js"></script>
+        <script type="text/javascript" src="js/RPAT.InletList.Views.js"></script>
+        <script type="text/javascript" src="js/RPAT.Inlet.Views.js"></script>
+        <script type="text/javascript" src="js/RPAT.Sidebar.js"></script>
+        <script type="text/javascript" src="js/RPAT.MapController.js"></script>
+        <script>
+        dojo.require("esri.map");
+        dojo.require("esri.layers.FeatureLayer");
+        dojo.ready(function() {
+        var options = {
+            mapConfig:{
+                mapCenter: [-98.55, 39.82],
+                zoom: 4,
+                basemaps: [
+                    {
+                        'name': 'National Geographic',
+                        'type': 'ArcGISTiledMapServiceLayer',
+                        'visible': true,
+                        'url': 'http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer'
+                    },
+                    {
+                        'name': 'Topo Map',
+                        'type': 'ArcGISTiledMapServiceLayer',
+                        'visible': false,
+                        'url': 'http://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer'
+                    },
+                    {
+                        'name': 'Satellite Imagery',
+                        'type': 'ArcGISTiledMapServiceLayer',
+                        'visible': false,
+                        'url': 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+                    }
+                ],
+            },
+            inletConfig:{
+                mapServiceUrl:'http://155.82.160.6/arcgis/rest/services/Oceans/CIRP_Inlets_Viewer/MapServer/0',
+                defaultSymbol: '#2185C5',
+                highlightSymbol: '#7ECEFD',
+                orderBy: 'INLET_NAME'
+            }
+        };
+            // Start the RPAT app (defined in js/RPAT.js)
+            RPAT.start(options);
+        });
+        </script>
+        <script>
+            // var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            // (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            // g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            // s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
+</html>

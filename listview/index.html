@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+	<header>
+		<h1>Two Pane view</h1>
+
+        <!--template definition-->
+        <!--list-view template-->
+        <script type="text/html" id="template-list-view">
+            <div id="content-list-view">
+                <div id="leftpane">
+                    <!--notification templdate-->
+                    <div id="notebox">Loading...</div>
+
+                    <div id="listbox"></div>
+                </div>
+                <div id="rightpane">
+                    <div id="rightpane-div1"></div>
+                    <div id="rightpane-div2"></div>
+                    <div id="rightpane-div3"></div>
+                </div>
+            </div>
+        </script>
+        <!--list item view template-->
+        <script type="text/html" id="template-list-item-view">
+            <section id="rec_title"><%= title %></section>
+            <section id="rec_date"><%= schedule %></section>
+            <section id="rec_type"><%= info %></section>
+        </script>
+	</header>
+
+	<body>
+        <!--doc layout-->
+        <section id="pvr_screen">
+            <header id="header"></header>
+            <section id="content"></section>
+            <footer id="footer"></footer>
+        </section>
+
+        <!-- css -->
+        <link rel="stylesheet" href="css/app.css">
+		<!-- vendor libraries -->
+        <script src="js/lib/jquery.min.js"></script>
+        <script src="js/lib/lodash.min.js"></script>
+		<script src="js/lib/backbone.js"></script>
+		<script src="js/lib/backbone.marionette.js"></script>
+		<!-- application -->
+        <script src="js/PVR.js"></script>
+        <script src="js/PVRModel.js"></script>
+        <script src="js/PVRView.js"></script>
+        <script src="js/PVRLayout.js"></script>
+		<script src="js/PVRController.js"></script>
+        <script>
+            $(function(){
+                PVR.start();
+            });
+        </script>
+	</body>
+</html>
