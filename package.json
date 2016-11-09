@@ -1,0 +1,27 @@
+{
+  "name": "templates",
+  "version": "1.0.0",
+  "description": "html5 demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loganfreeman/templates.git"
+  },
+  "keywords": [
+    "html5",
+    "css",
+    "jquery"
+  ],
+  "author": "logan freeman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/loganfreeman/templates/issues"
+  },
+  "homepage": "https://github.com/loganfreeman/templates#readme",
+  "devDependencies": {
+    "gulp-inject": "^4.1.0"
+  }
+}
