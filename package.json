@@ -4,7 +4,10 @@
   "description": "html5 demo",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "inject": "gulp inject",
+    "open": "open http://loganfreeman.github.io/templates/"
+
   },
   "repository": {
     "type": "git",
