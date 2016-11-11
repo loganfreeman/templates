@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "gh-pages": "gulp pages",
+    "gh-pages": "gulp links",
     "open": "open http://loganfreeman.github.io/templates/"
 
   },
