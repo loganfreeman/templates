@@ -17,17 +17,23 @@
 		<div class="container">
 			<header class="clearfix">
 				<h1>Html5 Demonstrations</h1>
-				<nav role="select">
-				  <!-- basic menu goes here -->
-
-				  <select onchange="if (this.value) window.location.href = this.value;">
-				    <option value="#">Stream</option>
-				    <option value="#">Lab</option>
-				    <option value="#">Projects</option>
-				    <option value="#">About</option>
-				    <option value="#">Contact</option>
-				  </select>
-				</nav>​
+				<nav id="cbp-hrmenu" class="cbp-hrmenu">
+					<ul>
+						<li>
+							<a href="#">Pages</a>
+							<div class="cbp-hrsub">
+								<div class="cbp-hrsub-inner">
+									<div>
+										<h4>Layout</h4>
+										<ul>
+											<li><a href="index_demo.html">Demo</a></li>
+										</ul>
+									</div>
+								</div><!-- /cbp-hrsub-inner -->
+							</div><!-- /cbp-hrsub -->
+						</li>
+					</ul>
+				</nav>
 			</header>
 			<div id="grid-gallery" class="grid-gallery">
 				<section class="grid-wrap">
@@ -40,13 +46,18 @@
 				</section><!-- // grid-wrap -->
 			</div><!-- // grid-gallery -->
 		</div>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script src="js/imagesloaded.pkgd.min.js"></script>
 		<script src="js/masonry.pkgd.min.js"></script>
 		<script src="js/classie.js"></script>
 		<script src="js/cbpGridGallery.js"></script>
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script>
 			new CBPGridGallery( document.getElementById( 'grid-gallery' ) );
+
+			$(function() {
+				cbpHorizontalMenu.init();
+			});
+
 		</script>
 	</body>
 </html>

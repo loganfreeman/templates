@@ -110,31 +110,34 @@ gulp.task('pages', function() {
             ))
             .pipe(rename('index_' + folder + '.html'))
             .pipe(gulp.dest('./'));
+    });
 
-        let index = gulp.src('./index.html.template')
-            .pipe(inject(
-                gulp.src(['./*/*.html']), {
-                    starttag: '<!-- inject:head:{{ext}} -->',
-                    transform: function(filepath, file) {
-                        let folder = filepath.split('/')[1];
-                        let title = get_title(file.contents.toString('utf8')) || 'NO TITLE';
-                        let img = get_img();
-                        return `
-          <li>
-            <figure>
-              <a href="${filepath.replace(/^\/|\/$/g, '')}">
-                <img src="${img}" alt="img"/>
-              </a>
-              <figcaption><h3>${folder}</h3><p>${title}</p></figcaption>
-            </figure>
-          </li>
-            `
-                    }
+    let index = gulp.src('./index.html.template')
+        .pipe(inject(
+            gulp.src(['./*/*.html']), {
+                starttag: '<!-- inject:head:{{ext}} -->',
+                transform: function(filepath, file) {
+                    let folder = filepath.split('/')[1];
+                    let title = get_title(file.contents.toString('utf8')) || 'NO TITLE';
+                    let img = get_img();
+                    return `
+      <li>
+        <figure>
+          <a href="${filepath.replace(/^\/|\/$/g, '')}">
+            <img src="${img}" alt="img"/>
+          </a>
+          <figcaption><h3>${folder}</h3><p>${title}</p></figcaption>
+        </figure>
+      </li>
+        `
                 }
-            ))
-            .pipe(rename('index.html'))
-            .pipe(gulp.dest('./'));
+            }
+        ))
+        .pipe(rename('index.html'))
+        .pipe(gulp.dest('./'));
 
-        return merge(tasks, index);
-    })
+    tasks.unshift(index);
+
+    return merge(tasks);
+
 })
