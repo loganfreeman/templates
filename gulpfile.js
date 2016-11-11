@@ -20,51 +20,53 @@ function getRandomInt(min, max) {
 }
 
 function get_title(str) {
-  try {
-    return str.match(title_regex)[1];
-  } catch (e) {
+    try {
+        return str.match(title_regex)[1];
+    } catch (e) {
 
-  }
+    }
 }
+
 function should_exclude(file) {
-  return file.startsWith('.') || exclude.includes(file);
+    return file.startsWith('.') || exclude.includes(file);
 }
+
 function getFolders(dir) {
     return fs.readdirSync(dir)
-      .filter(function(file) {
-        return fs.statSync(path.join(dir, file)).isDirectory() && !should_exclude(file);
-      });
+        .filter(function(file) {
+            return fs.statSync(path.join(dir, file)).isDirectory() && !should_exclude(file);
+        });
 }
 
 function get_img() {
-  let i = getRandomInt(1, 6);
-  return `img/thumb/${i}.png`
+    let i = getRandomInt(1, 6);
+    return `img/thumb/${i}.png`
 }
 
 
 gulp.task('html', function() {
-   var folders = getFolders('./');
+    var folders = getFolders('./');
 
-   folders.forEach((folder) => {
-     console.log(folder);
-   })
+    folders.forEach((folder) => {
+        console.log(folder);
+    })
 });
 
 gulp.task('list', function() {
-  gulp.src(['./*/*.html'])
-    .pipe(print())
+    gulp.src(['./*/*.html'])
+        .pipe(print())
 })
 
 gulp.task('inject', function() {
-  gulp.src('./index.html.template')
-    .pipe(inject(
-      gulp.src(['./*/*.html']), {
-        starttag: '<!-- inject:head:{{ext}} -->',
-        transform: function (filepath, file) {
-          let folder = filepath.split('/')[1];
-          let title = get_title(file.contents.toString('utf8')) || 'NO TITLE';
-          let img = get_img();
-          return `
+    gulp.src('./index.html.template')
+        .pipe(inject(
+            gulp.src(['./*/*.html']), {
+                starttag: '<!-- inject:head:{{ext}} -->',
+                transform: function(filepath, file) {
+                    let folder = filepath.split('/')[1];
+                    let title = get_title(file.contents.toString('utf8')) || 'NO TITLE';
+                    let img = get_img();
+                    return `
         <li>
           <figure>
             <a href="${filepath.replace(/^\/|\/$/g, '')}">
@@ -74,9 +76,65 @@ gulp.task('inject', function() {
           </figure>
         </li>
           `
-        }
-      }
-    ))
-    .pipe(rename('index.html'))
-    .pipe(gulp.dest('./'));
+                }
+            }
+        ))
+        .pipe(rename('index.html'))
+        .pipe(gulp.dest('./'));
+})
+
+
+gulp.task('pages', function() {
+    let folders = getFolders('pages');
+    let tasks = folders.map(function(folder) {
+        return gulp.src('./index.html.template')
+            .pipe(inject(
+                gulp.src(path.join('pages', folder, '/*/*.html')), {
+                    starttag: '<!-- inject:head:{{ext}} -->',
+                    transform: function(filepath, file) {
+                        let folder = filepath.split('/')[3];
+                        let title = get_title(file.contents.toString('utf8')) || 'NO TITLE';
+                        let img = get_img();
+                        return `
+            <li>
+              <figure>
+                <a href="${filepath.replace(/^\/|\/$/g, '')}">
+                  <img src="${img}" alt="img"/>
+                </a>
+                <figcaption><h3>${folder}</h3><p>${title}</p></figcaption>
+              </figure>
+            </li>
+              `
+                    }
+                }
+            ))
+            .pipe(rename('index_' + folder + '.html'))
+            .pipe(gulp.dest('./'));
+
+        let index = gulp.src('./index.html.template')
+            .pipe(inject(
+                gulp.src(['./*/*.html']), {
+                    starttag: '<!-- inject:head:{{ext}} -->',
+                    transform: function(filepath, file) {
+                        let folder = filepath.split('/')[1];
+                        let title = get_title(file.contents.toString('utf8')) || 'NO TITLE';
+                        let img = get_img();
+                        return `
+          <li>
+            <figure>
+              <a href="${filepath.replace(/^\/|\/$/g, '')}">
+                <img src="${img}" alt="img"/>
+              </a>
+              <figcaption><h3>${folder}</h3><p>${title}</p></figcaption>
+            </figure>
+          </li>
+            `
+                    }
+                }
+            ))
+            .pipe(rename('index.html'))
+            .pipe(gulp.dest('./'));
+
+        return merge(tasks, index);
+    })
 })
