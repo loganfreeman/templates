@@ -33,6 +33,15 @@ a:hover {
 	color: #000;
 }
 
+h1 > a {
+	color: #47a3da;
+}
+
+h1 > a:hover {
+	color: #47a3da;
+	opacity: 0.7;
+}
+
 .container > header {
 	width: 90%;
 	max-width: 69em;

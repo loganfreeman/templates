@@ -16,7 +16,7 @@
 	<body>
 		<div class="container">
 			<header class="clearfix">
-				<h1>Html5 Demonstrations</h1>
+				<h1><a href="index.html">Html5 Demonstrations</a></h1>
 				<nav id="cbp-hrmenu" class="cbp-hrmenu">
 					<ul>
 						<li>
