@@ -27,6 +27,10 @@ function get_title(str) {
     }
 }
 
+function trim_forward_slash(s) {
+    return s.replace(/^\//, '')
+}
+
 function should_exclude(file) {
     return file.startsWith('.') || exclude.includes(file);
 }
@@ -43,6 +47,10 @@ function get_img() {
     return `img/thumb/${i}.png`
 }
 
+gulp.task('list', () => {
+    gulp.src(['./*.html'])
+        .pipe(print())
+})
 
 gulp.task('html', function() {
     var folders = getFolders('./');
@@ -52,7 +60,7 @@ gulp.task('html', function() {
     })
 });
 
-gulp.task('list', function() {
+gulp.task('list-all', function() {
     gulp.src(['./*/*.html'])
         .pipe(print())
 })
@@ -140,4 +148,20 @@ gulp.task('pages', function() {
 
     return merge(tasks);
 
+})
+
+gulp.task('links', ['pages'], function() {
+    gulp.src(['./*.html'])
+        .pipe(inject(
+            gulp.src(['./*.html'], {
+                read: false
+            }), {
+                starttag: '<!-- inject:link:{{ext}} -->',
+                transform: function(filepath, file) {
+                    let filename = path.basename(filepath, '.html').replace(/^index\_/, '');
+                    return `<li><a href="${filepath.replace(/^\/|\/$/g, '')}">${filename}</a></li>`
+                }
+            }
+        ))
+        .pipe(gulp.dest('./'));
 })

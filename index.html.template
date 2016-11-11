@@ -26,7 +26,9 @@
 									<div>
 										<h4>Layout</h4>
 										<ul>
-											<li><a href="index_demo.html">Demo</a></li>
+											<!-- inject:link:html -->
+										  <!-- contents of html partials will be injected here -->
+										  <!-- endinject -->
 										</ul>
 									</div>
 								</div><!-- /cbp-hrsub-inner -->
