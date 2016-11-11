@@ -11,7 +11,7 @@ var uglify = require('gulp-uglify');
 var runSequence = require('run-sequence');
 var print = require('gulp-print');
 
-var exclude = ['js', 'css', 'img', 'fonts'];
+var exclude = ['js', 'css', 'img', 'fonts', 'pages'];
 
 var title_regex = new RegExp("<title>(.*?)</title>", "i");
 

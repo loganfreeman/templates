@@ -17,8 +17,17 @@
 		<div class="container">
 			<header class="clearfix">
 				<h1>Html5 Demonstrations</h1>
-				<nav>
-				</nav>
+				<nav role="select">
+				  <!-- basic menu goes here -->
+
+				  <select onchange="if (this.value) window.location.href = this.value;">
+				    <option value="#">Stream</option>
+				    <option value="#">Lab</option>
+				    <option value="#">Projects</option>
+				    <option value="#">About</option>
+				    <option value="#">Contact</option>
+				  </select>
+				</nav>​
 			</header>
 			<div id="grid-gallery" class="grid-gallery">
 				<section class="grid-wrap">
@@ -35,6 +44,7 @@
 		<script src="js/masonry.pkgd.min.js"></script>
 		<script src="js/classie.js"></script>
 		<script src="js/cbpGridGallery.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script>
 			new CBPGridGallery( document.getElementById( 'grid-gallery' ) );
 		</script>
